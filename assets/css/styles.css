@@ -634,9 +634,3 @@ p, .muted, .chip { margin-bottom:12px; }
   50%{ transform: scale(1.05); opacity:.25 }
 }
 
-/* Если пользователь не любит анимации */
-@media (prefers-reduced-motion: reduce){
-  .h-step{ animation: none; opacity:1; transform:none }
-  .h-icon::before{ animation:none; display:none }
-}
-

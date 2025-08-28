@@ -28,17 +28,23 @@
   <div class="rain" aria-hidden="true"></div>
   <script src="/mysite/mysite/assets/js/rain.js" defer></script>
 
-  <!-- header -->
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="/mysite/mysite/">ksntired.seo</a>
-      <nav class="nav">
-        <a href="/mysite/mysite/index.html">Главная</a>
-        <a href="/mysite/mysite/portfolio/" class="is-active">Портфолио</a>
-        <a href="/mysite/mysite/contacts/">Контакты</a>
-      </nav>
-    </div>
-  </header>
+   <!-- Шапка -->
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/mysite/mysite/">ksntired.seo</a>
+
+    <!-- burger -->
+    <button class="nav-toggle" aria-label="Открыть меню" aria-expanded="false" aria-controls="site-nav">
+  <span class="burger" aria-hidden="true"></span>
+</button>
+
+    <nav id="site-nav" class="nav">
+      <a href="/mysite/mysite/">Главная</a>
+      <a href="/mysite/mysite/portfolio/">Портфолио</a>
+      <a href="/mysite/mysite/contacts/">Контакты</a>
+    </nav>
+  </div>
+</header>
 
   <main>
     <!-- HERO -->
