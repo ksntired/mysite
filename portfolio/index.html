@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Портфолио — Ксения</title>
+  <meta name="description" content="Портфолио Ксении: контент-проекты, SEO-кейсы и код-проекты.">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <style>
+    .tabs { display:flex; flex-wrap:wrap; gap:12px; margin-bottom:28px; }
+    .tab { padding:10px 16px; border:1px solid var(--border); border-radius:999px; cursor:pointer; font-weight:600; opacity:.85; transition:.2s; }
+    .tab.is-active, .tab:hover { background:rgba(255,255,255,.08); opacity:1 }
+    .tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px }
+    .tag { font-size:12px; padding:3px 8px; border:1px solid var(--border); border-radius:999px; color:var(--muted) }
+    .hidden { display:none !important; }
+  </style>
+</head>
+<body>
+  <!-- фон дождя -->
+  <div class="rain" aria-hidden></div>
+  <script src="/assets/js/rain.js" defer></script>
+
+  <!-- header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/">ksntired.seo</a>
+      <nav class="nav">
+        <a href="/">Главная</a>
+        <a href="/portfolio/" class="is-active">Портфолио</a>
+      
+        <a href="/contacts/">Контакты</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="container">
+      <h1>Портфолио</h1>
+      <!-- вкладки -->
+      <div class="tabs">
+        <button class="tab is-active" data-filter="all">Все</button>
+        <button class="tab" data-filter="content">Контент</button>
+        <button class="tab" data-filter="seo">SEO</button>
+        <button class="tab" data-filter="code">Код</button>
+      </div>
+
+      <!-- сетка карточек -->
+     <div id="portfolio-grid" class="grid">
+  <div class="card" data-category="seo">
+    <img src="/assets/img/antiperevozchik-cover.jpg" alt="Антиперевозчик — юридические услуги">
+    <p class="chip">SEO • 2025</p>
+    <h3>Антиперевозчик — транспортный юрист</h3>
+    <p class="muted">Рост органики и конверсий, E-E-A-T, контент-план на 12 месяцев.</p>
+    <div class="tags"><span class="tag">E-E-A-T</span><span class="tag">Крауд</span></div>
+    <a class="btn" href="/portfolio/antiperevozchik.html">Подробнее</a>
+  </div>
+
+  <div class="card" data-category="content">
+    <img src="/assets/img/kusstom-cover.jpg" alt="Стоматология «Красота Успеха»">
+    <p class="chip">Контент • 2024–2025</p>
+    <h3>Стоматология «Красота Успеха»</h3>
+    <p class="muted">Услуги, блог, FAQ, локальное SEO для Казани и Татарстана.</p>
+    <div class="tags"><span class="tag">Bitrix</span><span class="tag">FAQ</span></div>
+    <a class="btn" href="/portfolio/kusstom.html">Подробнее</a>
+  </div>
+
+  <div class="card" data-category="code">
+    <img src="/assets/img/parser-cover.jpg" alt="Парсер Wordstat">
+    <p class="chip">Code • 2025</p>
+    <h3>Парсер векторной близости</h3>
+    <p class="muted">CLI-инструмент на Python для сбора вектороной близости.</p>
+    <div class="tags"><span class="tag">Python</span><span class="tag">Parsing</span></div>
+    <a class="btn" href="/portfolio/parser-semantics.html">Подробнее</a>
+  </div>
+</div>
+    </section>
+  </main>
+
+   <!-- footer -->
+  <footer>
+    <section class="container footer">
+      <div>
+        <strong>Контакты</strong>
+        <p class="muted">Тел.: +7 960 845-69-08<br>Telegram: @ksntired<br>Email: ksntired@yandex.ru</p>
+      </div>
+      <div>
+        <strong>Карта сайта</strong>
+        <p class="muted"><a href="/">Главная</a> · <a href="/portfolio/">Портфолио</a> · <a href="/contacts/">Контакты</a></p>
+      </div>
+      <div class="muted">© <span id="y"></span> ksntired</div>
+    </section>
+  </footer>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+  const y = document.getElementById('y');
+  if (y) y.textContent = new Date().getFullYear();
+
+  const tabs = document.querySelectorAll('[data-filter].tab');
+  const cards = document.querySelectorAll('#portfolio-grid [data-category]');
+
+  function applyFilter(f) {
+    tabs.forEach(tab => {
+      tab.classList.toggle(
+        'is-active',
+        tab.dataset.filter === f || (f === 'all' && tab.dataset.filter === 'all')
+      );
+    });
+    cards.forEach(card => {
+      card.classList.toggle('hidden', f !== 'all' && card.dataset.category !== f);
+    });
+  }
+
+  // клики по табам
+  tabs.forEach(tab => tab.addEventListener('click', () => applyFilter(tab.dataset.filter)));
+
+  // стартовое состояние
+  applyFilter('all');
+});
+
+// 1) ДАННЫЕ ПРОЕКТОВ — заполняй тут
+const PROJECTS = [
+  // ==== SEO / Контент / Код — примеры ====
+  { title: "Антиперевозчик — юрист", slug: "antiperevozchik",
+    category: "seo", year: "2025",
+    img: "https://antiperevozchik.ru/upload/CAllcorp3/ec5/cj3ptfndqy9bdgtuea5zkfyqxggk5vnk.png",
+    excerpt: "Рост органики и заявок, E-E-A-T, контент-план на 12 месяцев.",
+    tags: ["Аудит","E-E-A-T"] },
+
+  { title: "Стоматология «Красота Успеха»", slug: "kusstom",
+    category: "seo", year: "2025",
+    img: "https://kusstom.ru/upload/CAllcorp3Medc/a08/4luianoqkv2ftlbrt1dbddzm8tifjgwr.png",
+    excerpt: "Заполнение услуг и блога, FAQ, локальное SEO для Казани.",
+    tags: ["Bitrix","FAQ"] },
+
+  { title: "Парсер векторной близости", slug: "parser-semantics",
+    category: "code", year: "2025",
+    img: "https://avatars.mds.yandex.net/i?id=00851ddd478ba1228ba9eb2439b5705a_l-4254007-images-thumbs&n=13",
+    excerpt: "CLI-инструмент на Python для сбора вектороной близости.",
+    tags: ["Python","Parsing"] },
+
+  // ==== ДОБАВИЛА ИЗ СКРИНА (поставил черновые категории/изображения) ====
+{ title: "Зазеркалье", slug: "zazerkalie", category: "content", year: "2025",
+    img: "https://zazerkalie.su/upload/uf/600/dg9039vl0kbh0iy72364vjhh3dm5iavo.svg", excerpt: "Установка и монтаж натяжных потолков по г.Мариуполь", tags:["Контент","SEO"] },
+
+  { title: "x-avto", slug: "x-avto-auth", category: "seo", year: "2025",
+    img: "https://x-avto.com/local/templates/xavto/images/logo.svg", excerpt: "Аренда премиум авто по г. Москва", tags:["Контент","SEO"] },  
+
+  { title: "Arial", slug: "arial-kontent", category: "content", year: "2025",
+    img: "https://a-rial.ru/include/img/a-rial_logo.svg", excerpt: "Контент-поддержка сайта по широкоформатной печати.", tags:["Контент"] },
+
+  { title: "Мебельщиков", slug: "mebelnyj", category: "content", year: "2025",
+    img: "https://mebelshikov.ru/upload/CMax/f9d/bspp0289z8crp8p8pbvgfke7fj8trn19.webp", excerpt: "Сайт-производитель качественной мебели.", tags:["Производитель","Контент","SEO"] },
+
+  { title: "Авис", slug: "avis", category: "content", year: "2025",
+    img: "https://avisplast.ru/upload/CMax/d71/mowkgee22hwqzfafxm6n7j4czfuk35nl.png", excerpt: "Производитель электросварных фитингов.", tags:["Производитель","Контент"] },
+
+  { title: "Ultragym", slug: "ultragym", category: "content", year: "2025",
+    img: "https://optim.tildacdn.com/tild3062-6131-4261-a433-666563363633/-/resize/190x/-/format/webp/logo-light-1.png.webp", excerpt: "Производитель спортивного оборудования под ключ.", tags:["Производитель","Фитнес","Контент"] },
+
+  { title: "Line-Sport", slug: "line-sport", category: "content", year: "2025",
+    img: "https://line-sport.ru/upload/CLite/303/ka3199eg71izc9w4poulmyugme9qqukf.png", excerpt: "Производитель спортивного оборудования для спортзалов.", tags:["SEO","Sport","Контент"] },
+
+  { title: "АкваЦентр", slug: "akvacentor", category: "content", year: "2025",
+    img: "https://web.archive.org/web/20241003145155im_/https://aquacentershop.ru/upload/CMax/5db/4cdb09vp74y7ti1p07ojyxhksownach4.png", excerpt: "Производитель водоснабжаещего оборудования.", tags:["Контент"] },
+
+  { title: "Xlebobor", slug: "xlebobor", category: "content", year: "2025",
+    img: "https://www.xleb-obor.ru/upload/CMax/f46/v13f4zrp17m2kfplcdbzemdbkuuyr3hr.png", excerpt: "Производитель хлебопекарного оборудования.", tags:["SEO", "Контент"] },
+
+  { title: "Tepofol", slug: "tenofol", category: "content", year: "2025",
+    img: "https://spb.tepofol.shop/upload/CAllcorp3/460/liyc8xa19809vkme627jatw4dkexbb9n.png", excerpt: "Производитель утеплителя Тепофол.", tags:["Контент"] },
+
+  { title: "mysupply", slug: "mysupply", category: "content", year: "2025",
+    img: "https://my-supply.ru/upload/uf/227/zovbskfd51yrglllb6qbkwzfkjwycz7t.webp", excerpt: "Дизайнеры интерьеров под ключ", tags:["Контент"] },
+
+  { title: "Икс-Игрек-Зет Автоматизация", slug: "xyz-automation", category: "content", year: "2025",
+    img: "https://xyz-1c.ru/upload/CPriority2/77d/j219l04ynaa82bsve1hvbzato9pq0oi6.png", excerpt: "Автоматизация рабочих процессов, 1С.", tags:["Контент","SEO"] },
+
+  { title: "Dom Plintusa", slug: "dom-plintusa-auth", category: "content", year: "2025",
+    img: "https://avatars.mds.yandex.net/i?id=00851ddd478ba1228ba9eb2439b5705a_l-4254007-images-thumbs&n=13", excerpt: "Производитель плинтусов для дома.", tags:["SEO"] },
+
+  { title: "LUXURY WOOD DECOR™", slug: "lwd-auth", category: "content", year: "2025",
+    img: "https://lwdecor.ru/upload/CLite/d71/tve3zsromdrh4xwox8v52lsib5kisypa.svg", excerpt: "Оптовый производитель плинтусов.", tags:["Контент","SEO"] },
+
+  { title: "MEXAROOM", slug: "mexaroom", category: "content", year: "2025",
+    img: "https://avatars.mds.yandex.net/i?id=00851ddd478ba1228ba9eb2439b5705a_l-4254007-images-thumbs&n=13", excerpt: "Интернет-магазин изделий из меха.", tags:["Контент","SEO"] },
+
+  { title: "MAN LINE", slug: "man-line-porolon", category: "content", year: "2025",
+    img: "https://man-line.com/upload/CMax/27a/097p1ob0zwgy6jgq13q2oyos8szojj1u.jpg", excerpt: "Производитель вторичного вспененного поролона.", tags:["Каталог"] },
+    
+  
+];
+
+// 2) рендер карточек в .grid
+const grid = document.querySelector(".grid"); // тот самый контейнер
+grid.innerHTML = ""; // очистим старое
+
+function tagHTML(tags){
+  if(!tags || !tags.length) return "";
+  return `<div class="tags">${tags.map(t=>`<span class="tag">${t}</span>`).join("")}</div>`;
+}
+function chipText(cat, year){
+  if (cat === "seo") return `SEO • ${year}`;
+  if (cat === "content") return `Контент • ${year}`;
+  if (cat === "code") return `Code • ${year}`;
+  return year || "";
+}
+PROJECTS.forEach(p=>{
+  const card = document.createElement("div");
+  card.className = "card";
+  card.setAttribute("data-category", p.category);
+
+  card.innerHTML = `
+    <a href="/portfolio/${p.slug}.html/" class="card-link">
+      <img src="${p.img}" alt="${p.title}">
+      <p class="chip">${chipText(p.category, p.year || "")}</p>
+      <h3 class="card-title">${p.title}</h3>
+      <p class="muted card-excerpt">${p.excerpt || ""}</p>
+      ${tagHTML(p.tags)}
+    </a>
+    <a class="btn" href="/portfolio/${p.slug}.html">Подробнее</a>
+  `;
+  grid.appendChild(card);
+});
+
+</script>
+
+</body>
+</html>

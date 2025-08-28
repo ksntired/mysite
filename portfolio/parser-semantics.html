@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Парсер векторной близости (Python) — инструмент для ссылочной стратегии | Ксения</title>
+  <meta name="description" content="Кейс-инструмент: собственный парсер векторной близости на Python для ускорения ссылочной стратегии. Релевантность доноров, безопасные анкоры, экспорт в XLSX.">
+  <link rel="canonical" href="https://example.com/portfolio/vector-parser/">
+  <meta property="og:title" content="Парсер векторной близости (Python) — инструмент Ксении">
+  <meta property="og:description" content="Как автоматизировала отбор доноров: эмбеддинги + BM25, риск-контроль анкоров и прозрачный отчёт в XLSX.">
+  <meta property="og:image" content="https://example.com/assets/img/vector-parser-cover.jpg">
+  <meta property="og:url" content="https://example.com/portfolio/vector-parser/">
+
+  <link href="/assets/css/styles.css" rel="stylesheet" />
+  <style>
+    .accordion { max-width: 700px; margin: 0 auto; }
+    .accordion-item { border:1px solid var(--border); border-radius:8px; margin-bottom:12px; overflow:hidden; }
+    .accordion-content { max-height:0; overflow:hidden; transition:max-height .3s ease; background:rgba(255,255,255,0.03); padding:0 16px; }
+    .accordion-item input { display:none; }
+    .accordion-item input:checked ~ .accordion-content { max-height:280px; padding:14px 16px; }
+    .accordion-item label { display:flex; justify-content:space-between; align-items:center; padding:14px 16px; cursor:pointer; font-weight:600; background:var(--card); color:var(--text); }
+    .accordion-item label::after { content:"+"; }
+    .accordion-item input:checked + label::after { content:"−"; }
+    .muted-list { margin:0; padding-left:18px; color:var(--muted); }
+    .code-block { background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:10px; padding:12px 14px; overflow:auto; }
+  </style>
+</head>
+<body>
+  <!-- фон -->
+  <div class="rain" aria-hidden="true"></div>
+  <script src="/assets/js/rain.js" defer></script>
+
+  <!-- header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/">ksntired.seo</a>
+      <nav class="nav">
+        <a href="/index.html">Главная</a>
+        <a href="/portfolio/" class="is-active">Портфолио</a>>
+        <a href="/contacts/">Контакты</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="container">
+      <div class="hero">
+        <div>
+          <h1>Парсер векторной близости (Python)</h1>
+          <p>Внутренний инструмент для ускорения ссылочной стратегии: рассчитывает релевантность доноров к целевым страницам проекта, подсказывает безопасные анкоры и формирует прозрачный XLSX-отчёт для размещений.</p>
+          <div class="cta">
+            <a class="btn" href="/portfolio/">← Назад в портфолио</a>
+          </div>
+        </div>
+        <div class="hero-photo">
+          <img src="https://avatars.mds.yandex.net/i?id=635000c820c3da42ec1d2ada79c947a4_l-5869657-images-thumbs&n=13" alt="Обложка кейса — парсер векторной близости" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Описание -->
+    <section class="project-content">
+      <h2>Задача</h2>
+      <p>Сократить время на отбор площадок для ссылочного продвижения и снизить риски переоптимизации. Нужен инструмент, который автоматически оценит тематическую близость донора к целевой странице и учтёт качество сайта.</p>
+
+      <h3>Что делает инструмент</h3>
+      <ul>
+        <li><strong>Краулинг доноров</strong>: ограничение глубины/страниц, таймауты, троттлинг, кэш; парсинг title/h1/текста.</li>
+        <li><strong>Нормализация текста</strong>: очистка HTML, токенизация, лемматизация ru/en, стоп-слова.</li>
+        <li><strong>Оценка релевантности</strong>: быстрый контур TF-IDF/BM25 + точный контур эмбеддингов (SentenceTransformers) → косинусная близость.</li>
+        <li><strong>Скоринг</strong>: <em>sim_score = α·cos + β·BM25 + γ·title_match</em> (веса задаются в конфиге).</li>
+        <li><strong>Качество площадок</strong>: индексируемость, код ответа, возраст (WebArchive), заспамленность, видимость (можно подмешивать внешние метрики).</li>
+        <li><strong>Анкор-помощник</strong>: предложения по анкорам (бренд/URL/безанкор/НЧ), контроль долей в портфеле.</li>
+        <li><strong>Экспорт</strong>: CSV/XLSX с колонками <em>host, url, target_url, sim_score, ix_quality, spam, indexed, age, anchor_suggestion, status</em>.</li>
+      </ul>
+
+      <h3>Типовой пайплайн</h3>
+      <ol>
+        <li>Загружаем целевые URL/кластеры (JSON/YAML) по проекту.</li>
+        <li>Краулим кандидатов-доноров из списков/каталогов/выгрузок.</li>
+        <li>Считаем <em>sim_score</em>, фильтруем по порогам качества.</li>
+        <li>Формируем шорт-лист с рекомендованными анкорами.</li>
+        <li>Ведём статусы размещений и индексирования в едином файле.</li>
+      </ol>
+
+      <h3>CLI-пример</h3>
+      <div class="code-block"><pre><code>python link_vsim.py \
+  --target "https://antiperevozchik.ru/" \
+  --donors donors.txt \
+  --clusters clusters.json \
+  --bm25 --embeddings all-MiniLM-L6-v2 \
+  --max-pages 20 --depth 1 --timeout 10 --sleep 0.5 \
+  --export out/antiperevozchik_links.xlsx --verbose</code></pre></div>
+
+      <h3>Результаты внедрения</h3>
+      <ul>
+        <li>Сокращение времени прескоринга доноров в 3–5 раз.</li>
+        <li>Рост процента релевантных размещений и одобрений вебмастерами.</li>
+        <li>Стабильный баланс анкоров и снижение риска переоптимизации.</li>
+        <li>Прозрачный отчёт для клиента: почему именно этот донор и какая ожидаемая польза.</li>
+      </ul>
+    </section>
+
+    <!-- Галерея -->
+    <section class="container">
+      <h2>Галерея</h2>
+      <div class="grid">
+        <div class="card"><img src="https://example.com/assets/img/vector-parser-screen-1.jpg" alt="Скрин: терминал — расчёт близости" /></div>
+        <div class="card"><img src="https://example.com/assets/img/vector-parser-screen-2.jpg" alt="Скрин: таблица XLSX с результатами" /></div>
+        <div class="card"><img src="https://example.com/assets/img/vector-parser-screen-3.jpg" alt="Скрин: конфиг весов α/β/γ" /></div>
+      </div>
+      <div class="tags" style="margin-top:12px">
+        <span class="tag">Python</span>
+        <span class="tag">SEO tools</span>
+        <span class="tag">Embeddings</span>
+        <span class="tag">BM25</span>
+        <span class="tag">Link building</span>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="container">
+      <h2>FAQ по инструменту</h2>
+      <div class="accordion">
+        <div class="accordion-item">
+          <input type="checkbox" id="q1" />
+          <label for="q1">Можно ли подключить внешние метрики (ИКС, видимость, спам)?</label>
+          <div class="accordion-content">
+            <p>Да. Инструмент поддерживает подмешивание сторонних метрик в единый скоринг. Вес каждой метрики задаётся в конфиге, чтобы не «задушить» релевантность контента.</p>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <input type="checkbox" id="q2" />
+          <label for="q2">Как контролируется риск переоптимизации анкоров?</label>
+          <div class="accordion-content">
+            <p>Анкор-помощник следит за долями типов анкоров по проекту и кластерам; при превышении лимитов предлагает заменить формулировку на более безопасную.</p>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <input type="checkbox" id="q3" />
+          <label for="q3">Поддерживается ли многоязычие?</label>
+          <div class="accordion-content">
+            <p>Да. Базово — ru/en. Для других языков можно подключить соответствующие модели эмбеддингов и правила нормализации.</p>
+          </div>
+        </div>
+      </div>
+      <p class="muted" style="margin-top:10px">Техстек: Python 3.11, requests, selectolax/BS4, scikit-learn, sentence-transformers, pandas, openpyxl, concurrent.futures.</p>
+    </section>
+  </main>
+
+  <!-- footer -->
+  <footer>
+    <section class="container footer">
+      <div>
+        <strong>Контакты</strong>
+        <p class="muted">Тел.: +7 960 845-69-08<br>Telegram: @ksntired<br>Email: ksntired@yandex.ru</p>
+      </div>
+      <div>
+        <strong>Карта сайта</strong>
+        <p class="muted"><a href="/">Главная</a> · <a href="/portfolio/">Портфолио</a> · <a href="/contacts/">Контакты</a></p>
+      </div>
+      <div class="muted">© <span id="y"></span> ksntired</div>
+    </section>
+  </footer>
+</body>
+</html>
