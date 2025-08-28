@@ -41,3 +41,27 @@ function drawRain() {
 }
 
 drawRain();
+
+  (function(){
+    const header = document.querySelector('.site-header');
+    const btn = header?.querySelector('.nav-toggle');
+    const nav = document.getElementById('site-nav');
+
+    if(!btn || !nav) return;
+
+    btn.addEventListener('click', ()=>{
+      const open = header.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      document.body.classList.toggle('no-scroll', open);
+    });
+
+    // закрывать меню при клике по ссылке
+    nav.addEventListener('click', (e)=>{
+      const a = e.target.closest('a');
+      if(!a) return;
+      header.classList.remove('is-open');
+      btn.setAttribute('aria-expanded','false');
+      document.body.classList.remove('no-scroll');
+    });
+  })();
+
