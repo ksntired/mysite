@@ -217,7 +217,7 @@ PROJECTS.forEach(p=>{
   card.setAttribute("data-category", p.category);
 
   card.innerHTML = `
-    <a href="/mysite/portfolio/${p.slug}.html/" class="card-link">
+    <a href="/mysite/portfolio/${p.slug}.html" class="card-link">
       <img src="${p.img}" alt="${p.title}">
       <p class="chip">${chipText(p.category, p.year || "")}</p>
       <h3 class="card-title">${p.title}</h3>
