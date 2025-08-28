@@ -52,30 +52,30 @@
       <!-- сетка карточек -->
      <div id="portfolio-grid" class="grid">
   <div class="card" data-category="seo">
-    <img src="/mysite/mysite/assets/img/antiperevozchik-cover.jpg" alt="Антиперевозчик — юридические услуги">
+    <img src="/mysite/assets/img/antiperevozchik-cover.jpg" alt="Антиперевозчик — юридические услуги">
     <p class="chip">SEO • 2025</p>
     <h3>Антиперевозчик — транспортный юрист</h3>
     <p class="muted">Рост органики и конверсий, E-E-A-T, контент-план на 12 месяцев.</p>
     <div class="tags"><span class="tag">E-E-A-T</span><span class="tag">Крауд</span></div>
-    <a class="btn" href="/mysite/mysite/portfolio/antiperevozchik.html">Подробнее</a>
+    <a class="btn" href="/mysite/portfolio/antiperevozchik.html">Подробнее</a>
   </div>
 
   <div class="card" data-category="content">
-    <img src="/mysite/mysite/assets/img/kusstom-cover.jpg" alt="Стоматология «Красота Успеха»">
+    <img src="/mysite/assets/img/kusstom-cover.jpg" alt="Стоматология «Красота Успеха»">
     <p class="chip">Контент • 2024–2025</p>
     <h3>Стоматология «Красота Успеха»</h3>
     <p class="muted">Услуги, блог, FAQ, локальное SEO для Казани и Татарстана.</p>
     <div class="tags"><span class="tag">Bitrix</span><span class="tag">FAQ</span></div>
-    <a class="btn" href="/mysite/mysite/portfolio/kusstom.html">Подробнее</a>
+    <a class="btn" href="/mysite/portfolio/kusstom.html">Подробнее</a>
   </div>
 
   <div class="card" data-category="code">
-    <img src="/mysite/mysite/assets/img/parser-cover.jpg" alt="Парсер Wordstat">
+    <img src="/mysite/assets/img/parser-cover.jpg" alt="Парсер Wordstat">
     <p class="chip">Code • 2025</p>
     <h3>Парсер векторной близости</h3>
     <p class="muted">CLI-инструмент на Python для сбора вектороной близости.</p>
     <div class="tags"><span class="tag">Python</span><span class="tag">Parsing</span></div>
-    <a class="btn" href="/mysite/mysite/portfolio/parser-semantics.html">Подробнее</a>
+    <a class="btn" href="/mysite/portfolio/parser-semantics.html">Подробнее</a>
   </div>
 </div>
     </section>
@@ -90,7 +90,7 @@
       </div>
       <div>
         <strong>Карта сайта</strong>
-        <p class="muted"><a href="/mysite/mysite/">Главная</a> · <a href="/mysite/mysite/portfolio/">Портфолио</a> · <a href="/mysite/mysite/contacts/">Контакты</a></p>
+        <p class="muted"><a href="/mysite/">Главная</a> · <a href="/mysite/portfolio/">Портфолио</a> · <a href="/mysite/contacts/">Контакты</a></p>
       </div>
       <div class="muted">© <span id="y"></span> ksntired</div>
     </section>
@@ -217,14 +217,14 @@ PROJECTS.forEach(p=>{
   card.setAttribute("data-category", p.category);
 
   card.innerHTML = `
-    <a href="/mysite/mysite/portfolio/${p.slug}.html/" class="card-link">
+    <a href="/mysite/portfolio/${p.slug}.html/" class="card-link">
       <img src="${p.img}" alt="${p.title}">
       <p class="chip">${chipText(p.category, p.year || "")}</p>
       <h3 class="card-title">${p.title}</h3>
       <p class="muted card-excerpt">${p.excerpt || ""}</p>
       ${tagHTML(p.tags)}
     </a>
-    <a class="btn" href="/mysite/mysite/portfolio/${p.slug}.html">Подробнее</a>
+    <a class="btn" href="/mysite/portfolio/${p.slug}.html">Подробнее</a>
   `;
   grid.appendChild(card);
 });
