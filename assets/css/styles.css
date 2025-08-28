@@ -398,6 +398,53 @@ p, .muted, .chip { margin-bottom:12px; }
 /* абзацы внутри ответов */
 .accordion-content p { margin: 0 0 10px; }
 
+/* === Mobile adaptation for Accordion === */
+
+/* планшеты и ниже */
+@media (max-width: 900px){
+  .accordion{
+    max-width: 100%;
+    padding: 0 12px;          /* боковые поля, чтобы не липло к краям */
+  }
+  .accordion-item{
+    width: 100%;              /* убираем фиксированные 800px */
+    border-radius: 12px;
+    margin-bottom: 12px;
+  }
+  .accordion-item > label{
+    padding: 14px 16px;
+    font-size: 16px;
+    gap: 12px;
+  }
+  .accordion-item > label::after{
+    font-size: 20px;          /* +чуть крупнее иконка */
+  }
+  .accordion-content{
+    padding: 0 16px;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  .accordion-item > input:checked ~ .accordion-content{
+    padding: 14px 16px 16px;
+    max-height: 1000px;       /* чтобы длинные ответы полностью раскрывались */
+  }
+}
+
+/* очень узкие экраны */
+@media (max-width: 480px){
+  .accordion{ padding: 0 10px; }
+  .accordion-item > label{ padding: 13px 14px; font-size: 15px; }
+  .accordion-content{ font-size: 14px; }
+}
+
+/* на тач-устройствах убираем «подпрыгивание» по hover */
+@media (hover: none){
+  .accordion-item:hover{
+    transform: none;
+    box-shadow: 0 6px 20px rgba(0,0,0,.15);
+  }
+}
+
 /* ========== Project Content ========== */
 .project-content {
   max-width: 1200px;
